@@ -573,10 +573,6 @@ footer ul li a{
     .nav-links.active{
         display: block;
     }
-    header{
-        padding: 1rem 5rem;
-        gap: 8rem;
-    }
     header .logo{
         font-size: 1.5rem;
     }
