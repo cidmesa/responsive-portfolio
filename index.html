@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Website</title>
+    <link rel = "stylesheet" href = "style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins&display=swap">
+    <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+    
+    <!-- Updated header HTML structure to improve responsiveness -->
+    <header class="header">
+        <a href="#" class="logo"><span>Ian Mesa</span></a>
+
+        <ul class="nav-links">
+            <li>
+                <a href="#about">About</a>
+            </li>
+
+            <li>
+                <a href="#experience">Skills</a>
+            </li>
+
+            <li>
+                <a href="#project">Projects</a>
+            </li>
+
+            <li>
+                <a href="#contact">Contact</a>
+            </li>
+        </ul>
+
+        <div class="header-right">
+            <div class="theme-toggle">
+                <i class="fa-solid fa-sun" id="light-icon"></i>
+                <i class="fa-solid fa-moon" id="dark-icon"></i>
+                <div class="toggle-ball"></div>
+            </div>
+
+            <i class="fa-solid fa-bars" id="menu-icon"></i>
+
+            <a href="https://github.com/cidmesa" target="_blank" class="github-link">
+                <button class="visit-btn">Visit Github</button>
+            </a>
+        </div>
+    </header>
+
+    <section id="about" class="about">
+        <div class="about-container">
+            <div class="image-container">
+                <img id="about-picture" src="images/about-image.png" alt="Ian's Face">
+            </div>
+
+            <div class="info-box">
+
+                <div class="text">
+                    <h3>Hi, I'm</h3>
+                    <h1>Chriz Ian Mesa</h1>
+                    <span>Your Friendly Developer</span>
+                </div>
+
+                <div class="btn-group">
+                    <a href="https://docs.google.com/document/d/1udMclCSrf9RKUhyRbKFJxoAlXv_WVuB80mlyhEqNxgk/edit?tab=t.0" target="_blank">
+                        <div class="btn">View CV</div>
+                    </a>
+                    <a href="#contact">
+                        <div class="btn">Contact</div>
+                    </a>
+                </div>
+
+                <div class="socials">
+                    <a href="https://github.com/cidmesa" target="_blank">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    
+                    <a href="https://www.facebook.com/Yaniii123006008/" target="_blank">
+                        <i class="fa-brands fa-facebook"></i>
+                    </a>
+
+                    <a href="https://www.instagram.com/zirch6/" target="_blank">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="experience">
+
+        <h2 class="section-title">Skills</h2>
+
+        <div class="experience-info">
+
+            <div class="grid">
+
+                <div class="grid-card">
+                    <i class="fa-solid fa-code"></i>
+                    <span>Frontend Development</span>
+                    <h3>1 Year</h3>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. </p>
+                </div>
+
+                <div class="grid-card">
+                    <i class="fa-solid fa-file-code"></i>
+                    <span>Backend Development</span>
+                    <h3>1 Year</h3>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. </p>
+                </div>
+
+                <div class="grid-card">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                    <span>Mobile app Development</span>
+                    <h3>1 Year</h3>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. </p>
+                </div>
+
+                <div class="grid-card">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>Project Management</span>
+                    <h3>1 Year</h3>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. </p>
+                </div>
+
+                <div class="grid-card">
+                    <i class="fa-solid fa-photo-film"></i>
+                    <span>Media Production</span>
+                    <h3>2 Years</h3>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. </p>
+                </div>
+
+                <div class="grid-card">
+                    <i class="fa-solid fa-camera"></i>
+                    <span>Broadcast Directing</span>
+                    <h3>2 Years</h3>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. </p>
+                </div>
+            </div>
+            <img src="images/about-image.png" alt="Ian's Face">
+        </div>
+
+    </section>
+
+    <section id="project" class="project">
+
+        <h2 class="section-title">Recent Projects</h2>
+
+        <div class="project-grid">
+
+            <div class="project-card" id="project-1">
+                <img src="images/project-1.webp" alt="crypto-project">
+                <h3>Project X</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                <div class="btn-group">
+                    <div class="btn">Live Demo</div>
+                    <div class="btn">Github Repo</div>
+                </div>
+            </div>
+
+            <div class="project-card" id="project-2">
+                <img src="images/project-2.webp" alt="crypto-project">
+                <h3>Project Y</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                <div class="btn-group">
+                    <div class="btn">Live Demo</div>
+                    <div class="btn">Github Repo</div>
+                </div>
+            </div>
+
+            <div class="project-card" id="project-3">
+                <img src="images/project-3.webp" alt="crypto-project">
+                <h3>Project Z</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                <div class="btn-group">
+                    <div class="btn">Live Demo</div>
+                    <div class="btn">Github Repo</div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="input-box">
+            <h2 class="section-title">Contact</h2>
+            
+            <form action="https://formspree.io/f/xwplgkal" method="POST">
+                <div class="input">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <i class="fa-solid fa-circle-user"></i>
+                </div>
+    
+                <div class="input">
+                    <input type="email" name="email" placeholder="example@email.com" required>
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+    
+                <div class="input">
+                    <input type="text" name="message" placeholder="Your Message" required>
+                    <i class="fa-solid fa-comment"></i>
+                </div>
+                
+                <button type="submit" class="btn">Submit</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <ul>
+            <li>
+                <a href = '#about'>About</a>
+            </li>
+
+            <li>
+                <a href = '#experience'>Skills</a>
+            </li>
+
+            <li>
+                <a href = '#projects'>Projects</a>
+            </li>
+
+            <li>
+                <a href = '#contact'>Contact</a>
+            </li>
+        </ul>
+
+        <p class="copyright">© All Rights Reserved | Chriz Ian Mesa</p>
+    </footer>
+
+
+    <script src ="script.js"></script>
+</body>
+</html>
