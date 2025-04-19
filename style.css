@@ -306,6 +306,8 @@ section{
     align-items: center;
     justify-content: center;
     text-align: center;
+    width: 100%;  /* Ensure cards take full available width */
+    max-width: 100%;
     gap: 1.5rem;
     border: 2px solid black;
     border-radius: 3rem;
@@ -435,11 +437,12 @@ footer ul li a{
 
 @media(max-width:1288px){
     .project-grid{
-        grid-template-columns: repeat(1,1fr);
+        grid-template-columns: repeat(1, 1fr);
         justify-items: center;
+        gap: 2rem;  /* Add consistent gap */
     }
     .project-card{
-        max-width: 600px;
+        max-width: 90%;
     }
 }
 @media(max-width:1200px){
@@ -462,6 +465,21 @@ footer ul li a{
     }
     .input-box i{
         font-size: 2.5rem;
+    }
+    #project {
+        padding: 6rem 5%;  /* Further reduce padding on smaller screens */
+    }
+    
+    .project-card {
+        padding: 1.5rem 1rem;  /* Smaller padding on mobile */
+    }
+    
+    .section-title {
+        font-size: 3rem;  /* Smaller title on mobile */
+    }
+    
+    .project-card h3 {
+        font-size: 1.5rem;  /* Smaller heading on mobile */
     }
 }
 
@@ -507,6 +525,21 @@ footer ul li a{
     }
     .experience-info img{
         width: 70vw;
+    }
+    #project {
+        padding: 6rem 5%;  /* Further reduce padding on smaller screens */
+    }
+    
+    .project-card {
+        padding: 1.5rem 1rem;  /* Smaller padding on mobile */
+    }
+    
+    .section-title {
+        font-size: 3rem;  /* Smaller title on mobile */
+    }
+    
+    .project-card h3 {
+        font-size: 1.5rem;  /* Smaller heading on mobile */
     }
     
 }
@@ -587,6 +620,23 @@ footer ul li a{
     }
     footer ul{
         gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .project-card {
+        border-radius: 2rem;  /* Smaller border radius on very small screens */
+    }
+    
+    .btn-group {
+        flex-direction: column;  /* Stack buttons on very small screens */
+        width: 100%;
+    }
+    
+    .project-card .btn {
+        width: 100%;  /* Full width buttons */
+        text-align: center;
+        margin-bottom: 0.5rem;
     }
 }
 /* Create a container for the image with relative positioning */
