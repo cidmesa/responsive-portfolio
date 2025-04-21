@@ -53,13 +53,35 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 // Add this to your script.js file
-// Find the contact form submit event handler in script.js and modify it
+
+// Enhanced script with proper reCAPTCHA handling and email receipt
 document.addEventListener("DOMContentLoaded", function() {
-    // Previous reCAPTCHA script loading code...
+    // Make sure the reCAPTCHA script is properly loaded
+    const recaptchaScript = document.createElement('script');
+    recaptchaScript.src = 'https://www.google.com/recaptcha/api.js';
+    recaptchaScript.async = true;
+    recaptchaScript.defer = true;
+    document.head.appendChild(recaptchaScript);
     
     const contactForm = document.getElementById('contact-form');
     const submitBtn = document.getElementById('submit-btn');
     const statusDiv = document.getElementById('submit-status');
+    
+    // Ensure reCAPTCHA container exists
+    const recaptchaContainer = document.querySelector('.g-recaptcha');
+    if (!recaptchaContainer) {
+        console.error("reCAPTCHA container not found!");
+        
+        // If the container doesn't exist, create it
+        const newRecaptchaDiv = document.createElement('div');
+        newRecaptchaDiv.className = 'g-recaptcha';
+        newRecaptchaDiv.setAttribute('data-sitekey', '6LfoXB8rAAAAANJrB4Np5-MDP89Bigs6JmKPfC_n');
+        
+        // Insert it before the submit button
+        if (submitBtn && submitBtn.parentNode) {
+            submitBtn.parentNode.insertBefore(newRecaptchaDiv, submitBtn);
+        }
+    }
     
     // Track submission attempts
     let submissionCount = 0;
@@ -87,6 +109,14 @@ document.addEventListener("DOMContentLoaded", function() {
             e.preventDefault();
             
             // Validate reCAPTCHA
+            // Make sure grecaptcha object exists before trying to use it
+            if (typeof grecaptcha === 'undefined' || !grecaptcha.getResponse) {
+                statusDiv.textContent = 'reCAPTCHA has not loaded properly. Please refresh the page and try again.';
+                statusDiv.className = 'submit-status error';
+                statusDiv.style.display = 'block';
+                return;
+            }
+            
             const recaptchaResponse = grecaptcha.getResponse();
             if (!recaptchaResponse) {
                 statusDiv.textContent = 'Please complete the captcha';
@@ -108,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function() {
             submitBtn.classList.add('disabled');
             submitBtn.textContent = 'Sending...';
             
-            // Get the user's email for receipt
+            // Get the user's email and name for receipt
             const userEmail = contactForm.querySelector('input[name="email"]').value;
             const userName = contactForm.querySelector('input[name="name"]').value;
             
@@ -116,21 +146,18 @@ document.addEventListener("DOMContentLoaded", function() {
             const formData = new FormData(contactForm);
             formData.append('g-recaptcha-response', recaptchaResponse);
             
-            // Add _replyto field for Formspree to know where to send the receipt
+            // Add Formspree fields for email receipt
             formData.append('_replyto', userEmail);
-            
-            // Add _subject field to customize the receipt email subject
             formData.append('_subject', 'Thank you for contacting Ian Mesa');
             
-            // Add _autoresponse field for automatic email receipt
             const autoresponseMessage = `
-            Hello ${userName},
-            
-            Thank you for reaching out to me. I have received your message and will get back to you as soon as possible.
-            
-            Best regards,
-            Chriz Ian Mesa
-            `;
+Hello ${userName},
+
+Thank you for reaching out to me. I have received your message and will get back to you as soon as possible.
+
+Best regards,
+Chriz Ian Mesa
+`;
             formData.append('_autoresponse', autoresponseMessage);
             
             // Send form data to Formspree
@@ -149,7 +176,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     statusDiv.className = 'submit-status success';
                     statusDiv.style.display = 'block';
                     contactForm.reset();
-                    grecaptcha.reset();
+                    
+                    // Reset grecaptcha if it exists
+                    if (typeof grecaptcha !== 'undefined' && grecaptcha.reset) {
+                        grecaptcha.reset();
+                    }
                     
                     // Record submission time
                     localStorage.setItem('lastSubmissionTime', Date.now().toString());
@@ -173,7 +204,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 statusDiv.textContent = 'Something went wrong. Please try again.';
                 statusDiv.className = 'submit-status error';
                 statusDiv.style.display = 'block';
-                grecaptcha.reset();
+                
+                // Reset grecaptcha if it exists
+                if (typeof grecaptcha !== 'undefined' && grecaptcha.reset) {
+                    grecaptcha.reset();
+                }
             })
             .finally(() => {
                 submitBtn.disabled = false;
