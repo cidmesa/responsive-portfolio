@@ -793,3 +793,52 @@ footer ul li a {
 [data-theme="dark"] .toggle-ball {
     transform: translateX(30px);
 }
+
+
+/* Add these styles to your style.css file */
+
+/* reCAPTCHA container */
+.g-recaptcha {
+    margin: 1rem 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Submit status messages */
+.submit-status {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    display: none;
+}
+
+.submit-status.success {
+    display: block;
+    background-color: rgba(0, 200, 0, 0.2);
+    color: #008800;
+}
+
+.submit-status.error {
+    display: block;
+    background-color: rgba(255, 0, 0, 0.2);
+    color: #cc0000;
+}
+
+/* Disable button when processing */
+.btn.disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Style for the dark mode */
+[data-theme="dark"] .submit-status.success {
+    background-color: rgba(0, 200, 0, 0.3);
+    color: #00cc00;
+}
+
+[data-theme="dark"] .submit-status.error {
+    background-color: rgba(255, 0, 0, 0.3);
+    color: #ff5555;
+}

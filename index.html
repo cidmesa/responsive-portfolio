@@ -182,27 +182,33 @@
         </div>
     </section>
 
+        <!-- Updated contact section with reCAPTCHA -->
     <section class="contact" id="contact">
         <div class="input-box">
             <h2 class="section-title">Contact</h2>
             
-            <form action="https://formspree.io/f/xwplgkal" method="POST">
+            <form id="contact-form" action="https://formspree.io/f/xwplgkal" method="POST">
                 <div class="input">
                     <input type="text" name="name" placeholder="Your Name" required>
                     <i class="fa-solid fa-circle-user"></i>
                 </div>
-    
+
                 <div class="input">
                     <input type="email" name="email" placeholder="example@email.com" required>
                     <i class="fa-solid fa-envelope"></i>
                 </div>
-    
+
                 <div class="input">
                     <input type="text" name="message" placeholder="Your Message" required>
                     <i class="fa-solid fa-comment"></i>
                 </div>
                 
-                <button type="submit" class="btn">Submit</button>
+                <!-- Google reCAPTCHA v2 -->
+                <div class="g-recaptcha" data-sitekey="6LdpWB8rAAAAALuPvg8K5yosyXe1rLQsR3WZKBJL"></div>
+                
+                <div id="submit-status" class="submit-status"></div>
+                
+                <button type="submit" class="btn" id="submit-btn">Submit</button>
             </form>
         </div>
     </section>
