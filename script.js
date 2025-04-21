@@ -54,9 +54,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // Add this to your script.js file
 
-// Enhanced script with proper reCAPTCHA handling and email receipt
 document.addEventListener("DOMContentLoaded", function() {
-    // Make sure the reCAPTCHA script is properly loaded
+    // Add reCAPTCHA script
     const recaptchaScript = document.createElement('script');
     recaptchaScript.src = 'https://www.google.com/recaptcha/api.js';
     recaptchaScript.async = true;
@@ -69,27 +68,29 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // Ensure reCAPTCHA container exists
     const recaptchaContainer = document.querySelector('.g-recaptcha');
-    if (!recaptchaContainer) {
-        console.error("reCAPTCHA container not found!");
-        
-        // If the container doesn't exist, create it
+    if (!recaptchaContainer && contactForm) {
+        console.log("Adding reCAPTCHA container");
         const newRecaptchaDiv = document.createElement('div');
         newRecaptchaDiv.className = 'g-recaptcha';
         newRecaptchaDiv.setAttribute('data-sitekey', '6LfoXB8rAAAAANJrB4Np5-MDP89Bigs6JmKPfC_n');
         
-        // Insert it before the submit button
-        if (submitBtn && submitBtn.parentNode) {
+        // Insert it before the submit status div
+        const statusElement = document.getElementById('submit-status');
+        if (statusElement && statusElement.parentNode) {
+            statusElement.parentNode.insertBefore(newRecaptchaDiv, statusElement);
+        } else {
+            // Add before submit button as fallback
             submitBtn.parentNode.insertBefore(newRecaptchaDiv, submitBtn);
         }
     }
     
     // Track submission attempts
-    let submissionCount = 0;
+    let submissionCount = parseInt(localStorage.getItem('submissionCount') || '0');
     const lastSubmissionTime = localStorage.getItem('lastSubmissionTime');
     const submissionTimeLimit = 60000; // 1 minute in milliseconds
     
     // Check if user has submitted recently
-    if (lastSubmissionTime && Date.now() - lastSubmissionTime < submissionTimeLimit) {
+    if (lastSubmissionTime && Date.now() - parseInt(lastSubmissionTime) < submissionTimeLimit) {
         const waitTime = Math.ceil((parseInt(lastSubmissionTime) + submissionTimeLimit - Date.now()) / 1000);
         statusDiv.textContent = `Please wait ${waitTime} seconds before submitting again.`;
         statusDiv.className = 'submit-status error';
@@ -105,11 +106,46 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     if (contactForm) {
+        // Important: Add hidden fields directly to the form for Formspree
+        // This ensures these fields are always sent regardless of JS execution
+        if (!contactForm.querySelector('input[name="_cc"]')) {
+            // Add hidden field to enable email receipt (CC approach)
+            const ccField = document.createElement('input');
+            ccField.type = 'hidden';
+            ccField.name = '_cc';
+            ccField.id = 'form-cc-field';
+            contactForm.appendChild(ccField);
+        }
+        
+        if (!contactForm.querySelector('input[name="_autoresponse"]')) {
+            // Add hidden field for autoresponse message
+            const autoResponseField = document.createElement('input');
+            autoResponseField.type = 'hidden';
+            autoResponseField.name = '_autoresponse';
+            autoResponseField.value = "Thank you for contacting me. I've received your message and will get back to you soon. - Chriz Ian";
+            contactForm.appendChild(autoResponseField);
+        }
+        
+        if (!contactForm.querySelector('input[name="_subject"]')) {
+            // Add hidden field for email subject
+            const subjectField = document.createElement('input');
+            subjectField.type = 'hidden';
+            subjectField.name = '_subject';
+            subjectField.value = "Thank you for contacting Ian Mesa";
+            contactForm.appendChild(subjectField);
+        }
+        
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
+            // Update the CC field with the user's email before submission
+            const userEmail = contactForm.querySelector('input[name="email"]').value;
+            const ccField = document.getElementById('form-cc-field');
+            if (ccField) {
+                ccField.value = userEmail;
+            }
+            
             // Validate reCAPTCHA
-            // Make sure grecaptcha object exists before trying to use it
             if (typeof grecaptcha === 'undefined' || !grecaptcha.getResponse) {
                 statusDiv.textContent = 'reCAPTCHA has not loaded properly. Please refresh the page and try again.';
                 statusDiv.className = 'submit-status error';
@@ -126,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             
             // Check submission frequency
-            if (lastSubmissionTime && Date.now() - lastSubmissionTime < submissionTimeLimit) {
+            if (lastSubmissionTime && Date.now() - parseInt(lastSubmissionTime) < submissionTimeLimit) {
                 statusDiv.textContent = 'Please wait before submitting again';
                 statusDiv.className = 'submit-status error';
                 statusDiv.style.display = 'block';
@@ -138,27 +174,9 @@ document.addEventListener("DOMContentLoaded", function() {
             submitBtn.classList.add('disabled');
             submitBtn.textContent = 'Sending...';
             
-            // Get the user's email and name for receipt
-            const userEmail = contactForm.querySelector('input[name="email"]').value;
-            const userName = contactForm.querySelector('input[name="name"]').value;
-            
             // Prepare form data with reCAPTCHA
             const formData = new FormData(contactForm);
             formData.append('g-recaptcha-response', recaptchaResponse);
-            
-            // Add Formspree fields for email receipt
-            formData.append('_replyto', userEmail);
-            formData.append('_subject', 'Thank you for contacting Ian Mesa');
-            
-            const autoresponseMessage = `
-Hello ${userName},
-
-Thank you for reaching out to me. I have received your message and will get back to you as soon as possible.
-
-Best regards,
-Chriz Ian Mesa
-`;
-            formData.append('_autoresponse', autoresponseMessage);
             
             // Send form data to Formspree
             fetch('https://formspree.io/f/xwplgkal', {
@@ -185,6 +203,7 @@ Chriz Ian Mesa
                     // Record submission time
                     localStorage.setItem('lastSubmissionTime', Date.now().toString());
                     submissionCount++;
+                    localStorage.setItem('submissionCount', submissionCount.toString());
                     
                     // If too many submissions, add longer delay
                     if (submissionCount > 3) {
