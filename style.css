@@ -138,9 +138,68 @@ section{
 }
 
 .about{
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.8;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 0.3s ease, background-image 0.3s ease;
+}
+
+.hero-background {
+    background-image: url('images/light.png');
+}
+
+/* Dark theme background */
+[data-theme="dark"] .hero-background {
+    opacity: 0.4; /* Lower opacity in dark mode for better contrast */
+    background-image: url('images/dark.png');
+}
+
+/* Add this to your style.css file */
+
+/* Method 1: Using a gradient overlay */
+.hero-background::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40%; /* Controls how much of the bottom gets blurred */
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0) 0%,
+        var(--bg-color) 100%
+    );
+    z-index: 1;
+}
+
+/* For dark mode */
+[data-theme="dark"] .hero-background::after {
+    background: linear-gradient(
+        to bottom,
+        rgba(18, 18, 18, 0) 0%,
+        var(--bg-color) 100%
+    );
+}
+
+/* Make sure the content remains readable */
+.about-container {
+    position: relative;
+    z-index: 2;
 }
 
 .about .about-container{
@@ -841,4 +900,21 @@ footer ul li a {
 [data-theme="dark"] .submit-status.error {
     background-color: rgba(255, 0, 0, 0.3);
     color: #ff5555;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .hero-background {
+        background-size: 200% auto; /* Make the image larger on small screens */
+        background-position: left top; /* Keep focus on the left side */
+        background-repeat: no-repeat;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-background {
+        background-size: 300% auto; /* Even larger on very small screens */
+        background-position: 10% top; /* Slightly adjust to ensure critical elements remain visible */
+        background-repeat: no-repeat;
+    }
 }

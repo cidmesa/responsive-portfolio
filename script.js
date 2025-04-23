@@ -5,8 +5,6 @@ menuIcon.onclick = () =>{
     navLinks.classList.toggle('active')
 }
 
-// Add this to your script.js file
-
 // Check for saved theme preference or use device preference
 const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
 const savedTheme = localStorage.getItem("theme");
@@ -50,9 +48,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 });
-
-
-// Add this to your script.js file
 
 document.addEventListener("DOMContentLoaded", function() {
     // Add reCAPTCHA script
@@ -106,44 +101,14 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     if (contactForm) {
-        // Important: Add hidden fields directly to the form for Formspree
-        // This ensures these fields are always sent regardless of JS execution
-        if (!contactForm.querySelector('input[name="_cc"]')) {
-            // Add hidden field to enable email receipt (CC approach)
-            const ccField = document.createElement('input');
-            ccField.type = 'hidden';
-            ccField.name = '_cc';
-            ccField.id = 'form-cc-field';
-            contactForm.appendChild(ccField);
-        }
-        
-        if (!contactForm.querySelector('input[name="_autoresponse"]')) {
-            // Add hidden field for autoresponse message
-            const autoResponseField = document.createElement('input');
-            autoResponseField.type = 'hidden';
-            autoResponseField.name = '_autoresponse';
-            autoResponseField.value = "Thank you for contacting me. I've received your message and will get back to you soon. - Chriz Ian";
-            contactForm.appendChild(autoResponseField);
-        }
-        
-        if (!contactForm.querySelector('input[name="_subject"]')) {
-            // Add hidden field for email subject
-            const subjectField = document.createElement('input');
-            subjectField.type = 'hidden';
-            subjectField.name = '_subject';
-            subjectField.value = "Thank you for contacting Ian Mesa";
-            contactForm.appendChild(subjectField);
-        }
+        // IMPORTANT: Remove the previous implementation of hidden fields
+        // (Don't add the hidden fields directly to the form anymore)
         
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Update the CC field with the user's email before submission
+            // Get the user's email for CC
             const userEmail = contactForm.querySelector('input[name="email"]').value;
-            const ccField = document.getElementById('form-cc-field');
-            if (ccField) {
-                ccField.value = userEmail;
-            }
             
             // Validate reCAPTCHA
             if (typeof grecaptcha === 'undefined' || !grecaptcha.getResponse) {
@@ -178,12 +143,17 @@ document.addEventListener("DOMContentLoaded", function() {
             const formData = new FormData(contactForm);
             formData.append('g-recaptcha-response', recaptchaResponse);
             
-            // Send form data to Formspree
+            // Send form data to Formspree with special headers instead of form fields
             fetch('https://formspree.io/f/xwplgkal', {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    // Add Formspree configuration through headers instead of form fields
+                    'X-Formspree-Autoresponse': 'Thank you for contacting me. I\'ve received your message and will get back to you soon. - Chriz Ian',
+                    'X-Formspree-Subject': 'Thank you for contacting Ian Mesa',
+                    // If you want to CC the sender, use this header
+                    'X-Formspree-Forward-CC': userEmail
                 }
             })
             .then(response => response.json())
